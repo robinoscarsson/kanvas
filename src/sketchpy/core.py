@@ -1,7 +1,6 @@
 import time
-import pygame
 
-from . import view
+from . import view, controller
 
 def run(setup, draw, target_fps=60, size=(640, 360), title="SketchPy"):
     view.create_window(*size, title=title)
@@ -14,10 +13,9 @@ def run(setup, draw, target_fps=60, size=(640, 360), title="SketchPy"):
     frame_time = 1.0 / target_fps
 
     while running:
-        ev = view.poll_events()
-        if ev.get("QUIT"):
+        input_state = controller.handle_input()
+        if input_state["quit"]:
             running = False
-            break
 
         now = time.perf_counter()
         delta_ms = (now - last) * 1000.0

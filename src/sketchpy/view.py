@@ -49,8 +49,6 @@ def poll_events() -> dict:
         if event.type == pygame.QUIT:
             event_dict["QUIT"] = True
         elif event.type == pygame.KEYDOWN:
-            if event.key in (pygame.K_q, pygame.K_x, pygame.K_ESCAPE):
-                event_dict["QUIT"] = True
             event_dict["KEYDOWN"].append(event.key)
         elif event.type == pygame.KEYUP:
             event_dict["KEYUP"].append(event.key)
