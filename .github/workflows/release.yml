@@ -34,26 +34,6 @@ jobs:
           name: dist
           path: dist/*
 
-  publish-testpypi:
-    name: Publish to TestPyPI (pre-releases)
-    needs: build
-    runs-on: ubuntu-latest
-    # Publicera till TestPyPI om taggen innehåller a/b/rc enligt PEP 440
-    if: contains(github.ref, 'a') || contains(github.ref, 'b') || contains(github.ref, 'rc')
-    steps:
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Publish
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          user: __token__
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-
   publish-pypi:
     name: Publish to PyPI (stable)
     needs: build
