@@ -1,19 +1,23 @@
 [build-system]
-requires = ["setuptools>=68.0"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "kanvas"
-version = "0.1.0"
-description = "A minimal p5.js-style creative coding library for Python."
-readme = "README.md"
-license = { text = "MIT" }
-authors = [{ name = "Robin Oscarsson" }]
+version = "0.1.0b1"
+description = "A minimalist creative-coding toolkit for Python (homage to Processing/p5)."
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
-dependencies = [
-    "pygame>=2.0",
-    "numpy"
-]
+authors = [{ name = "Your Name" }]
+license = { text = "MIT" }
+dependencies = ["pygame>=2.0", "numpy>=1.23"]
 
 [project.urls]
-Homepage = "https://github.com/robinoscarsson/kanvas"
+Homepage = "https://github.com/robinoscarssonkanvas"
+Issues = "https://github.com/robinoscarsson/kanvas/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
