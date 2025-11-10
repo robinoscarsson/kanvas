@@ -52,7 +52,7 @@ Press **ESC** to quit or **S** to save the current frame as a PNG image.
 
 ## Examples
 
-### Sierpinski Triangle
+### Sierpinski/Sierpiński Triangle
 Generate fractals using the chaos game method:
 
 ```python

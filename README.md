@@ -60,7 +60,7 @@ Press **ESC** to quit or close the window.
 
 Check out the `examples/` directory for more demonstrations:
 
-### Serpinski Triangle
+### Sierpinski/Sierpiński Triangle
 Fractal generation using the chaos game method.
 
 ![Serpinski Triangle](examples/output/Serpinski%20Triangle%20Demo_20251110_204627.png)
