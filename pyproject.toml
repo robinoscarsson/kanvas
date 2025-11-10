@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kanvas"
-version = "0.1.2"
+version = "0.1.3"
 description = "A minimalist creative-coding toolkit for Python (homage to Processing/p5)."
-readme = { file = "README.md", content-type = "text/markdown" }
+readme = { file = "README_PYPI.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
 authors = [{ name = "Robin Oscarsson" }]
 license = { text = "MIT" }
