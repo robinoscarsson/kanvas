@@ -1,5 +1,5 @@
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
-from .core import run, no_loop, loop, is_looping
+from .core import run, noLoop, loop, isLooping
 
-__all__ = ['run', 'no_loop', 'loop', 'is_looping']
+__all__ = ['run', 'noLoop', 'loop', 'isLooping']

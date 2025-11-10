@@ -6,7 +6,7 @@ from .model import Model
 # Global flag to control the draw loop
 _loop_enabled = True
 
-def no_loop():
+def noLoop():
     """Stop the draw loop from running.
     
     Similar to p5.js noLoop(), this stops the draw() function from being
@@ -25,7 +25,7 @@ def loop():
     global _loop_enabled
     _loop_enabled = True
 
-def is_looping():
+def isLooping():
     """Check if the draw loop is currently running.
     
     Returns:

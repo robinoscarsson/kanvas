@@ -176,6 +176,31 @@ Clear the entire canvas to a grayscale value.
 - `model.w`: Canvas width in pixels
 - `model.h`: Canvas height in pixels
 
+### Loop Control Functions
+
+#### `noLoop()`
+Stop the draw loop from running. Similar to p5.js `noLoop()`, this stops the `draw()` function from being called repeatedly. The application continues to respond to input but `draw()` is no longer executed each frame.
+
+```python
+from kanvas import run, noLoop
+
+def draw(model, frame, dt):
+    # Draw something
+    model.pixel(frame % model.w, model.h // 2, 255, 255, 255)
+    
+    # Stop drawing after 100 frames
+    if frame >= 100:
+        noLoop()
+```
+
+#### `loop()`
+Resume the draw loop after it was stopped with `noLoop()`. Similar to p5.js `loop()`, this resumes calling the `draw()` function each frame.
+
+#### `isLooping()`
+Check if the draw loop is currently running.
+
+**Returns:** `bool` - `True` if `draw()` is being called each frame, `False` if stopped with `noLoop()`
+
 ### Controls
 
 - **ESC**: Quit the application
@@ -193,6 +218,62 @@ This makes kanvas ideal for:
 - Educational workshops and tutorials
 
 ## Advanced Usage
+
+### Loop Control
+Create static images or control animation timing:
+
+```python
+import math
+from kanvas import run, noLoop, loop, isLooping
+
+def setup(model):
+    model.clear(0)
+
+def draw(model, frame, dt):
+    # Draw a growing circle
+    radius = frame // 10
+    center_x, center_y = model.w // 2, model.h // 2
+    
+    # Simple circle drawing
+    for angle in range(0, 360, 5):
+        x = center_x + int(radius * math.cos(math.radians(angle)))
+        y = center_y + int(radius * math.sin(math.radians(angle)))
+        if 0 <= x < model.w and 0 <= y < model.h:
+            model.pixel(x, y, 255, 255, 255)
+    
+    # Stop when circle reaches edge
+    if radius >= min(model.w, model.h) // 2:
+        noLoop()
+        print("Animation complete")
+
+run(setup, draw, size=(400, 400), title="Growing Circle")
+```
+
+### Interactive Control
+Toggle drawing with conditional logic:
+
+```python
+from kanvas import run, noLoop, loop, isLooping
+
+def setup(model):
+    model.clear(20)
+
+def draw(model, frame, dt):
+    # Toggle loop every 3 seconds (180 frames at 60 FPS)
+    if frame % 180 == 0 and frame > 0:
+        if isLooping():
+            noLoop()
+            print("Paused")
+        else:
+            loop() 
+            print("Resumed")
+    
+    # Simple animation
+    x = (frame * 2) % model.w
+    model.pixel(x, model.h // 2, 255, 100, 100)
+
+run(setup, draw)
+```
 
 ### Animation Loops
 Create smooth animations using the frame counter:

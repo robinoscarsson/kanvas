@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kanvas"
-version = "0.1.4"
+version = "0.1.5"
 description = "A minimalist creative-coding toolkit for Python (homage to Processing/p5)."
 readme = { file = "README_PYPI.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
