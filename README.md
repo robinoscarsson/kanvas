@@ -66,7 +66,7 @@ Fractal generation using the chaos game method.
 ![Serpinski Triangle](examples/output/Serpinski%20Triangle%20Demo_20251110_204627.png)
 
 ```python
-# Run with: python examples/serpinski_triangle.py
+# Run with: python examples/sierpinski_triangle.py
 ```
 
 ### Ulam Spiral  
