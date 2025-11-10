@@ -63,7 +63,7 @@ Check out the `examples/` directory for more demonstrations:
 ### Sierpinski/Sierpiński Triangle
 Fractal generation using the chaos game method.
 
-![Serpinski Triangle](examples/output/Serpinski%20Triangle%20Demo_20251110_204627.png)
+![Sierpinski Triangle](examples/output/Sierpinski%20Triangle%20Demo_20251110_204627.png)
 
 ```python
 # Run with: python examples/sierpinski_triangle.py

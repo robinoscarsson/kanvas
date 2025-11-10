@@ -21,4 +21,4 @@ def draw(model, frame, dt):
         p['y'] = (p['y'] + target['y']) // 2
         model.pixel(p['x'], p['y'], 255, 255, 255)
 
-run(setup, draw, size=(800, 800), title="Serpinski Triangle Demo")
+run(setup, draw, size=(800, 800), title="Sierpinski Triangle Demo")
