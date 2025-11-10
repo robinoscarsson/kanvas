@@ -3,6 +3,36 @@ import time
 from . import view, controller
 from .model import Model
 
+# Global flag to control the draw loop
+_loop_enabled = True
+
+def no_loop():
+    """Stop the draw loop from running.
+    
+    Similar to p5.js noLoop(), this stops the draw() function from being
+    called repeatedly. The application will continue to respond to input
+    but draw() will no longer be executed each frame.
+    """
+    global _loop_enabled
+    _loop_enabled = False
+
+def loop():
+    """Resume the draw loop.
+    
+    Similar to p5.js loop(), this resumes calling the draw() function
+    each frame after it was stopped with noLoop().
+    """
+    global _loop_enabled
+    _loop_enabled = True
+
+def is_looping():
+    """Check if the draw loop is currently running.
+    
+    Returns:
+        bool: True if draw() is being called each frame, False if stopped with noLoop()
+    """
+    return _loop_enabled
+
 def run(setup, draw, target_fps=60, size=(640, 360), title="kanvas"):
     view.create_window(*size, title=title)
     model = Model(size[0], size[1])
@@ -32,7 +62,11 @@ def run(setup, draw, target_fps=60, size=(640, 360), title="kanvas"):
         last = now
 
         view.begin_frame()
-        draw(model, frameCount, delta_ms)
+        
+        # Only call draw() if looping is enabled
+        if _loop_enabled:
+            draw(model, frameCount, delta_ms)
+            
         view.present_framebuffer(model.fb)
         view.end_frame()
 
