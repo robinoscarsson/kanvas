@@ -13,7 +13,7 @@ license = { text = "MIT" }
 dependencies = ["pygame>=2.0", "numpy>=1.23"]
 
 [project.urls]
-Homepage = "https://github.com/robinoscarssonkanvas"
+Homepage = "https://github.com/robinoscarsson/kanvas"
 Issues = "https://github.com/robinoscarsson/kanvas/issues"
 
 [tool.setuptools]
