@@ -56,3 +56,58 @@ class Model:
         """
         if 0 <= x < self.w and 0 <= y < self.h:
             self.fb[x, y] = (r, g, b)
+
+    def line(self, x0, y0, x1, y1, r, g, b):
+        dx = abs(x1 - x0)
+        dy = -abs(y1 - y0)
+        sx = 1 if x0 < x1 else -1
+        sy = 1 if y0 < y1 else -1
+        err = dx + dy  # startfel
+
+        while True:
+            # bounds-koll så vi inte kraschar om användaren är utanför
+            if 0 <= x0 < self.w and 0 <= y0 < self.h:
+                self.pixel(x0, y0, r, g, b)
+
+            if x0 == x1 and y0 == y1:
+                break
+
+            e2 = 2 * err
+            if e2 >= dy:
+                err += dy
+                x0 += sx
+            if e2 <= dx:
+                err += dx
+                y0 += sy
+
+    def rect(self, x, y, w, h, r, g, b, fill=False):
+        # yttre ram
+        self.line(x, y, x + w - 1, y, r, g, b)               # topp
+        self.line(x, y, x, y + h - 1, r, g, b)               # vänster
+        self.line(x + w - 1, y, x + w - 1, y + h - 1, r, g, b)  # höger
+        self.line(x, y + h - 1, x + w - 1, y + h - 1, r, g, b)  # botten
+
+        if fill:
+            # enkel fill: horisontella linjer mellan vänster/höger
+            for yy in range(y + 1, y + h - 1):
+                self.line(x + 1, yy, x + w - 2, yy, r, g, b)
+
+    def circle(self, cx, cy, radius, r, g, b, fill=False):
+        r2 = radius * radius
+
+        for y in range(cy - radius, cy + radius + 1):
+            for x in range(cx - radius, cx + radius + 1):
+                dx = x - cx
+                dy = y - cy
+                dist2 = dx*dx + dy*dy
+
+                if fill:
+                    # alla punkter *inom* cirkeln
+                    if dist2 <= r2:
+                        if 0 <= x < self.w and 0 <= y < self.h:
+                            self.pixel(x, y, r, g, b)
+                else:
+                    # bara punkter nära kanten (toleransband)
+                    if r2 - radius <= dist2 <= r2 + radius:
+                        if 0 <= x < self.w and 0 <= y < self.h:
+                            self.pixel(x, y, r, g, b)
