@@ -10,17 +10,17 @@ def draw(model, frame, dt):
     cx = model.w // 2
     cy = model.h // 2
 
-    # Bana (radie)
+    # Orbit (radius)
     radius = 80
 
-    # Beräkna en position som rör sig i en cirkel
+    # Calculate a position that moves in a circle
     x = cx + int(radius * math.cos(frame * 0.05))
     y = cy + int(radius * math.sin(frame * 0.05))
 
-    # Rita en liten cyan prick
+    # Draw a small cyan dot
     model.circle(x, y, 10, 0, 200, 255)
 
-    # Rita central punkt bara för estetiken
+    # Draw central point just for aesthetics
     model.circle(cx, cy, 3, 255, 255, 255)
 
 run(setup, draw, size=(640, 360), title="Orbiting Circle Demo")
