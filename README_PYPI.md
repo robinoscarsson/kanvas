@@ -2,16 +2,12 @@
 
 A minimalist creative-coding toolkit for Python, inspired by Processing and p5.js.
 
-## Overview
-
-kanvas provides a simple, educational framework for creative coding in Python. It captures the essence of Processing's `setup()` and `draw()` paradigm while maintaining a clean, readable codebase that's perfect for learning how creative coding frameworks work under the hood.
-
 **Key Features:**
 - Simple setup/draw loop similar to Processing
-- Built on pygame for reliable cross-platform support
-- Clean separation of concerns (model-view-controller architecture)
-- Lightweight and hackable (~200 lines of core code)
-- Beginner-friendly API with educational focus
+- Built on pygame for cross-platform support
+- Lightweight and hackable codebase
+- Basic shape primitives (line, rect, circle)
+- Educational focus with readable code
 
 ## Installation
 
@@ -27,33 +23,42 @@ pip install kanvas
 ## Quick Start
 
 ```python
-from kanvas.core import run
+from kanvas import run
 
 def setup(model):
-    """Called once at startup"""
-    model.clear(30)  # Set background to gray
+    model.clear(30)  # gray background
 
 def draw(model, frame, dt):
-    """Called every frame"""
+    # Moving white line
     x = (frame // 2) % model.w
     for y in range(model.h):
         model.pixel(x, y, 255, 255, 255)
 
-# Run the sketch
 run(setup, draw, size=(800, 600), title="My First Sketch")
 ```
 
-Save this as `sketch.py` and run with:
-```bash
-python sketch.py
-```
-
-Press **ESC** to quit or **S** to save the current frame as a PNG image.
+Press **ESC** to quit or **S** to save frame as PNG.
 
 ## Examples
 
-### Sierpinski/Sierpiński Triangle
-Generate fractals using the chaos game method:
+### Basic Shapes
+```python
+from kanvas import run
+
+def draw(model, frame, dt):
+    model.clear(0)
+    model.line(10, 10, model.w - 10, model.h - 10, 255, 255, 255)  # line
+    model.rect(20, 20, 100, 60, 255, 0, 0)  # rectangle
+    model.circle(model.w // 2, model.h // 2, 50, 0, 255, 0)  # circle
+
+run(lambda m: None, draw, size=(400, 300))
+```
+
+### Animated Examples
+Check the `examples/` folder for:
+- **Fractal Tree**: Recursive tree with swaying motion
+- **Orbiting Circle**: Circular motion animation  
+- **Sierpinski Triangle**: Chaos game fractal generation
 
 ```python
 from kanvas.core import run
@@ -155,158 +160,30 @@ Main entry point to start a kanvas sketch.
 - `title`: Window title string (default: "kanvas")
 - `target_fps`: Target frames per second (default: 60)
 
-### Model API
-
-The `model` object provides the drawing surface:
-
-#### `model.pixel(x, y, r, g, b)`
-Set a pixel at coordinates (x, y) to RGB color (r, g, b).
-
-**Parameters:**
-- `x, y`: Integer coordinates (0,0 is top-left)
-- `r, g, b`: Color values from 0-255
-
-#### `model.clear(gray_value)`
-Clear the entire canvas to a grayscale value.
-
-**Parameters:**
-- `gray_value`: Integer from 0 (black) to 255 (white)
-
-#### Properties
-- `model.w`: Canvas width in pixels
-- `model.h`: Canvas height in pixels
-
-### Loop Control Functions
-
-#### `noLoop()`
-Stop the draw loop from running. Similar to p5.js `noLoop()`, this stops the `draw()` function from being called repeatedly. The application continues to respond to input but `draw()` is no longer executed each frame.
+### Drawing API
 
 ```python
-from kanvas import run, noLoop
-
-def draw(model, frame, dt):
-    # Draw something
-    model.pixel(frame % model.w, model.h // 2, 255, 255, 255)
-    
-    # Stop drawing after 100 frames
-    if frame >= 100:
-        noLoop()
+model.pixel(x, y, r, g, b)           # Set pixel color
+model.clear(gray)                    # Clear to grayscale 
+model.clear(r, g, b)                 # Clear to RGB color
+model.line(x0, y0, x1, y1, r, g, b)  # Draw line
+model.rect(x, y, w, h, r, g, b, fill=False)      # Draw rectangle
+model.circle(cx, cy, radius, r, g, b, fill=False) # Draw circle
 ```
 
-#### `loop()`
-Resume the draw loop after it was stopped with `noLoop()`. Similar to p5.js `loop()`, this resumes calling the `draw()` function each frame.
+**Properties:** `model.w` (width), `model.h` (height)
 
-#### `isLooping()`
-Check if the draw loop is currently running.
-
-**Returns:** `bool` - `True` if `draw()` is being called each frame, `False` if stopped with `noLoop()`
+### Loop Control
+- `noLoop()` / `loop()` - Stop/start animation
+- `isLooping()` - Check if animating
 
 ### Controls
-
-- **ESC**: Quit the application
-- **S**: Save current frame as PNG image to `./output/` directory
+- **ESC**: Quit  
+- **S**: Save frame as PNG
 
 ## Philosophy
 
-kanvas is designed for **learning by doing**. The entire codebase is intentionally simple and readable, making it easy to understand how creative coding frameworks work internally. There's no magic - you can trace every function call from user input to pixel output.
-
-This makes kanvas ideal for:
-- Learning creative coding concepts
-- Understanding game loop architecture  
-- Teaching graphics programming
-- Rapid prototyping of visual ideas
-- Educational workshops and tutorials
-
-## Advanced Usage
-
-### Loop Control
-Create static images or control animation timing:
-
-```python
-import math
-from kanvas import run, noLoop, loop, isLooping
-
-def setup(model):
-    model.clear(0)
-
-def draw(model, frame, dt):
-    # Draw a growing circle
-    radius = frame // 10
-    center_x, center_y = model.w // 2, model.h // 2
-    
-    # Simple circle drawing
-    for angle in range(0, 360, 5):
-        x = center_x + int(radius * math.cos(math.radians(angle)))
-        y = center_y + int(radius * math.sin(math.radians(angle)))
-        if 0 <= x < model.w and 0 <= y < model.h:
-            model.pixel(x, y, 255, 255, 255)
-    
-    # Stop when circle reaches edge
-    if radius >= min(model.w, model.h) // 2:
-        noLoop()
-        print("Animation complete")
-
-run(setup, draw, size=(400, 400), title="Growing Circle")
-```
-
-### Interactive Control
-Toggle drawing with conditional logic:
-
-```python
-from kanvas import run, noLoop, loop, isLooping
-
-def setup(model):
-    model.clear(20)
-
-def draw(model, frame, dt):
-    # Toggle loop every 3 seconds (180 frames at 60 FPS)
-    if frame % 180 == 0 and frame > 0:
-        if isLooping():
-            noLoop()
-            print("Paused")
-        else:
-            loop() 
-            print("Resumed")
-    
-    # Simple animation
-    x = (frame * 2) % model.w
-    model.pixel(x, model.h // 2, 255, 100, 100)
-
-run(setup, draw)
-```
-
-### Animation Loops
-Create smooth animations using the frame counter:
-
-```python
-import math
-
-def draw(model, frame, dt):
-    model.clear(0)
-    
-    # Animated circle
-    center_x = model.w // 2
-    center_y = model.h // 2
-    radius = 50
-    
-    angle = frame * 0.05
-    x = center_x + int(radius * math.cos(angle))
-    y = center_y + int(radius * math.sin(angle))
-    
-    # Draw a simple circle by setting pixels
-    for dx in range(-5, 6):
-        for dy in range(-5, 6):
-            if dx*dx + dy*dy <= 25:  # Circle equation
-                if 0 <= x+dx < model.w and 0 <= y+dy < model.h:
-                    model.pixel(x+dx, y+dy, 255, 255, 255)
-```
-
-### Interactive Sketches
-While kanvas currently focuses on generative art, you can create interactive elements by using the frame counter and mathematical functions to respond to time-based input.
-
-## Contributing
-
-kanvas is an educational project welcoming contributions! The codebase is intentionally simple to encourage learning and experimentation.
+kanvas is designed for **learning by doing**. The codebase is simple and readable, perfect for understanding how creative coding frameworks work. Ideal for education, prototyping, and creative exploration.
 
 ## Source Code
 
