@@ -5,16 +5,12 @@
 
 A minimalist creative-coding toolkit for Python, inspired by [Processing](https://processing.org/) and [p5.js](https://p5js.org/).
 
-## Overview
-
-kanvas provides a simple, educational framework for creative coding in Python. It captures the essence of Processing's `setup()` and `draw()` paradigm while maintaining a clean, readable codebase that's perfect for learning how creative coding frameworks work under the hood.
-
 **Key Features:**
 - Simple setup/draw loop similar to Processing
-- Built on pygame for reliable cross-platform support
-- Clean separation of concerns (model-view-controller architecture)
-- Lightweight and hackable (~200 lines of core code)
-- Beginner-friendly API with educational focus
+- Built on pygame for cross-platform support
+- Basic shape primitives (pixel, line, rect, circle)
+- Lightweight and hackable codebase (~200 lines)
+- Educational focus with clean MVC architecture
 
 ## Installation
 
@@ -33,50 +29,48 @@ pip install -e .
 ## Quick Start
 
 ```python
-from kanvas.core import run
+from kanvas import run
 
 def setup(model):
-    """Called once at startup"""
-    model.clear(30)  # Set background to gray
+    model.clear(30)  # gray background
 
 def draw(model, frame, dt):
-    """Called every frame"""
+    # Moving white line
     x = (frame // 2) % model.w
     for y in range(model.h):
         model.pixel(x, y, 255, 255, 255)
 
-# Run the sketch
 run(setup, draw, size=(800, 600), title="My First Sketch")
 ```
 
-Save this as `sketch.py` and run with:
-```bash
-python sketch.py
-```
-
-Press **ESC** to quit or close the window.
+Press **ESC** to quit, **S** to save frame.
 
 ## Examples
 
-Check out the `examples/` directory for more demonstrations:
+## Examples
 
-### Sierpinski/Sierpiński Triangle
-Fractal generation using the chaos game method.
+### Basic Shapes
+```python
+from kanvas import run
+
+def draw(model, frame, dt):
+    model.clear(0)
+    model.line(10, 10, model.w - 10, model.h - 10, 255, 255, 255)
+    model.rect(20, 20, 100, 60, 255, 0, 0)
+    model.circle(model.w // 2, model.h // 2, 50, 0, 255, 0)
+
+run(lambda m: None, draw, size=(400, 300))
+```
+
+### More Examples
+Check the `examples/` directory:
+- **Fractal Tree**: Recursive tree with swaying motion
+- **Orbiting Circle**: Circular motion animation  
+- **Sierpinski Triangle**: Chaos game fractal
+- **Ulam Spiral**: Prime number visualization
 
 ![Sierpinski Triangle](examples/output/Sierpinski%20Triangle%20Demo_20251110_204627.png)
-
-```python
-# Run with: python examples/sierpinski_triangle.py
-```
-
-### Ulam Spiral  
-Prime number visualization in spiral form - a beautiful mathematical pattern where prime numbers create distinctive diagonal structures.
-
 ![Ulam Spiral](examples/output/Ulam%20Spiral%20Demo%20(fixed)_20251110_204254.png)
-
-```python  
-# Run with: python examples/ulam_spiral.py
-```
 
 ## API Reference
 
@@ -92,159 +86,61 @@ Main entry point to start a kanvas sketch.
 - `title`: Window title string (default: "kanvas")
 - `target_fps`: Target frames per second (default: 60)
 
-### Model API
-
-The `model` object provides the drawing surface:
-
-#### `model.pixel(x, y, r, g, b)`
-Set a pixel at coordinates (x, y) to RGB color (r, g, b).
-
-#### `model.clear(gray_value)`
-Clear the entire canvas to a grayscale value (0-255).
-
-#### Properties
-- `model.w`: Canvas width in pixels
-- `model.h`: Canvas height in pixels
-
-### Loop Control Functions
-
-#### `noLoop()`
-Stop the draw loop from running. Similar to p5.js `noLoop()`, this stops the `draw()` function from being called repeatedly. The application continues to respond to input but `draw()` is no longer executed each frame.
+### Drawing API
 
 ```python
-from kanvas import run, noLoop
+# Basic drawing functions
+model.pixel(x, y, r, g, b)                      # Set pixel
+model.clear(gray) / model.clear(r, g, b)        # Clear canvas
+model.line(x0, y0, x1, y1, r, g, b)             # Draw line  
+model.rect(x, y, w, h, r, g, b, fill=False)     # Draw rectangle
+model.circle(cx, cy, radius, r, g, b, fill=False) # Draw circle
 
-def draw(model, frame, dt):
-    # Draw something
-    model.pixel(frame % model.w, model.h // 2, 255, 255, 255)
-    
-    # Stop drawing after 100 frames
-    if frame >= 100:
-        noLoop()
+# Properties
+model.w, model.h  # Canvas dimensions
 ```
 
-#### `loop()`
-Resume the draw loop after it was stopped with `noLoop()`. Similar to p5.js `loop()`, this resumes calling the `draw()` function each frame.
-
-#### `isLooping()`
-Check if the draw loop is currently running.
-
-**Returns:** `bool` - `True` if `draw()` is being called each frame, `False` if stopped with `noLoop()`
-
-### Controls
-
-- **ESC**: Quit the application
-- **S**: Save current frame as PNG image
-
-## Advanced Usage
-
-### Loop Control
-Create static images or control animation timing using loop control functions:
+### Loop Control & Input
 
 ```python
-import math
-from kanvas import run, noLoop, loop, isLooping
+from kanvas import noLoop, loop, isLooping
 
-def setup(model):
-    model.clear(0)
-
-def draw(model, frame, dt):
-    # Draw a growing circle
-    radius = frame // 10
-    center_x, center_y = model.w // 2, model.h // 2
-    
-    # Simple circle drawing
-    for angle in range(0, 360, 5):
-        x = center_x + int(radius * math.cos(math.radians(angle)))
-        y = center_y + int(radius * math.sin(math.radians(angle)))
-        if 0 <= x < model.w and 0 <= y < model.h:
-            model.pixel(x, y, 255, 255, 255)
-    
-    # Stop when circle reaches edge
-    if radius >= min(model.w, model.h) // 2:
-        noLoop()
-        print("Animation complete - press ESC to quit")
-
-run(setup, draw, size=(400, 400), title="Growing Circle")
+noLoop()      # Stop animation
+loop()        # Resume animation  
+isLooping()   # Check if running
 ```
 
-### Interactive Control
-Toggle drawing with conditional logic:
+**Controls:** ESC (quit), S (save frame)
 
-```python
-from kanvas import run, noLoop, loop, isLooping
 
-def setup(model):
-    model.clear(20)
 
-def draw(model, frame, dt):
-    # Toggle loop every 3 seconds (180 frames at 60 FPS)
-    if frame % 180 == 0 and frame > 0:
-        if isLooping():
-            noLoop()
-            print("Paused - animation will resume in 3 seconds")
-        else:
-            loop()
-            print("Resumed")
-    
-    # Simple animation
-    x = (frame * 2) % model.w
-    model.pixel(x, model.h // 2, 255, 100, 100)
+## Architecture & Philosophy
 
-run(setup, draw, title="Auto-pause Demo")
-```
-
-## Architecture
-
-kanvas follows a clean MVC architecture:
+Clean MVC pattern in ~200 lines. Designed for **learning by doing** with simple, readable code.
 
 ```
 src/kanvas/
-├── core.py         # Main application loop and coordination
-├── controller.py   # Input handling (keyboard, mouse, window events)
-├── view.py         # Rendering and window management (pygame)
-├── model.py        # Canvas state and pixel operations
-└── utils.py        # Utility functions
+├── core.py         # Main loop
+├── controller.py   # Input handling  
+├── view.py         # Pygame rendering
+├── model.py        # Canvas & drawing
+└── utils.py        # Utilities
 ```
 
-## Philosophy
+## Contributing & License
 
-kanvas is designed for **learning by doing**. The entire codebase is intentionally simple and readable, making it easy to understand how creative coding frameworks work internally. There's no magic - you can trace every function call from user input to pixel output.
-
-This makes kanvas ideal for:
-- Learning creative coding concepts
-- Understanding game loop architecture
-- Teaching graphics programming
-- Rapid prototyping of visual ideas
-- Educational workshops and tutorials
-
-## Contributing
-
-This is primarily an educational project, but contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with clear commit messages
-4. Submit a pull request
+Educational project welcoming contributions! MIT License - see GitHub for details.
 
 ## Roadmap
 
-- [ ] Basic shape primitives (line, circle, rectangle)
+- [x] Shape primitives (pixel, line, rect, circle) ✅
 - [ ] Color management system
-- [ ] Mouse and keyboard input handling
-- [ ] Transformation matrix support
-- [ ] Image export utilities
-- [ ] Animation recording
-
-## License
-
-MIT License. See [LICENSE](LICENSE) for details.
+- [ ] Mouse and keyboard input
+- [ ] Animation recording & export
 
 ## Acknowledgments
 
-- Inspired by [Processing](https://processing.org/) and [p5.js](https://p5js.org/)
-- Built with [pygame](https://pygame.org)
-- Created for educational purposes and creative exploration
+Inspired by [Processing](https://processing.org/) and [p5.js](https://p5js.org/), built with [pygame](https://pygame.org).
 
 ---
 
@@ -366,4 +262,4 @@ This is a **hobby project**, not a product. Expect it to evolve (and break) as i
 
 ## 📄 License
 
-MIT License — do whatever you want, but if you learn something, pass it on.
+MIT License — do whatever you want, but if you learn something, or make something cool, pass it on.
