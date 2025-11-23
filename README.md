@@ -9,7 +9,7 @@ A minimalist creative-coding toolkit for Python, inspired by [Processing](https:
 - Simple setup/draw loop similar to Processing
 - Built on pygame for cross-platform support
 - Basic shape primitives (pixel, line, rect, circle)
-- Lightweight and hackable codebase (~680 lines)se)
+- 2D noise functions (value noise and Perlin noise)
 - Lightweight and hackable codebase (~680 lines)
 - Educational focus with clean MVC architecture
 
@@ -45,8 +45,6 @@ run(setup, draw, size=(800, 600), title="My First Sketch")
 ```
 
 Press **ESC** to quit, **S** to save frame.
-
-## Examples
 
 ## Examples
 
@@ -148,17 +146,6 @@ src/kanvas/
 
 Educational project welcoming contributions! MIT License - see GitHub for details.
 
-## Roadmap
-
-- [x] Shape primitives (pixel, line, rect, circle) ✅
-- [ ] Color management system
-- [ ] Mouse and keyboard input
-- [ ] Animation recording & export
-
-## Acknowledgments
-
-Inspired by [Processing](https://processing.org/) and [p5.js](https://p5js.org/), built with [pygame](https://pygame.org).
-
 ---
 
 ## 🎨 Overview
@@ -231,13 +218,14 @@ examples/
 
 ---
 
-## ✨ Features (so far)
+## ✨ Features
 
 - Minimal setup/draw loop  
 - Clean separation of core / view / controller / model  
 - ESC and window close handling  
 - Shape primitives (pixel, line, rect, circle)
 - 2D noise functions (value noise and Perlin noise)
+- Beginner-friendly codebase
 
 ---
 
