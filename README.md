@@ -9,7 +9,8 @@ A minimalist creative-coding toolkit for Python, inspired by [Processing](https:
 - Simple setup/draw loop similar to Processing
 - Built on pygame for cross-platform support
 - Basic shape primitives (pixel, line, rect, circle)
-- Lightweight and hackable codebase (~200 lines)
+- Lightweight and hackable codebase (~680 lines)se)
+- Lightweight and hackable codebase (~680 lines)
 - Educational focus with clean MVC architecture
 
 ## Installation
@@ -68,6 +69,8 @@ Check the `examples/` directory:
 - **Orbiting Circle**: Circular motion animation  
 - **Sierpinski Triangle**: Chaos game fractal
 - **Ulam Spiral**: Prime number visualization
+- **Noise Demo**: Comparison of value noise and Perlin noise
+- **Noise Animation**: Animated flowing noise patterns
 
 ![Sierpinski Triangle](examples/output/Sierpinski%20Triangle%20Demo_20251110_204627.png)
 ![Ulam Spiral](examples/output/Ulam%20Spiral%20Demo%20(fixed)_20251110_204254.png)
@@ -100,6 +103,20 @@ model.circle(cx, cy, radius, r, g, b, fill=False) # Draw circle
 model.w, model.h  # Canvas dimensions
 ```
 
+### Noise Functions
+
+```python
+from kanvas.model import noise, p_noise
+
+# Value noise (simple, smooth)
+value = noise(x, y, seed=42)           # Returns float in [0.0, 1.0]
+
+# Perlin gradient noise (more organic)
+value = p_noise(x, y, seed=42)         # Returns float in [0.0, 1.0]
+```
+
+Both functions are deterministic based on seed and return values in the range [0.0, 1.0].
+
 ### Loop Control & Input
 
 ```python
@@ -116,7 +133,7 @@ isLooping()   # Check if running
 
 ## Architecture & Philosophy
 
-Clean MVC pattern in ~200 lines. Designed for **learning by doing** with simple, readable code.
+Clean MVC pattern in ~680 lines. Designed for **learning by doing** with simple, readable code.
 
 ```
 src/kanvas/
@@ -219,8 +236,8 @@ examples/
 - Minimal setup/draw loop  
 - Clean separation of core / view / controller / model  
 - ESC and window close handling  
-- Simple pixel drawing via NumPy framebuffer  
-- Beginner-friendly codebase (~200 lines total)
+- Shape primitives (pixel, line, rect, circle)
+- 2D noise functions (value noise and Perlin noise)
 
 ---
 
@@ -242,11 +259,12 @@ If you’re curious about:
 
 ## 🧩 Roadmap (subject to whim)
 
-- [ ] Basic shape primitives (`line`, `circle`, `rect`)
+- [x] Basic shape primitives (`line`, `circle`, `rect`) ✅
+- [x] 2D noise functions (value and Perlin) ✅
 - [ ] `background()`, `fill()`, `stroke()` API layer
 - [ ] Mouse position and keyboard input
 - [ ] Higher-level color & transformation helpers
-- [ ] Export to image / animation
+- [ ] Fractal/octave noise (fbm)
 
 This is a **hobby project**, not a product. Expect it to evolve (and break) as it grows.
 

@@ -7,6 +7,7 @@ A minimalist creative-coding toolkit for Python, inspired by Processing and p5.j
 - Built on pygame for cross-platform support
 - Lightweight and hackable codebase
 - Basic shape primitives (line, rect, circle)
+- 2D noise functions (value noise and Perlin noise)
 - Educational focus with readable code
 
 ## Installation
@@ -59,6 +60,7 @@ Check the `examples/` folder for:
 - **Fractal Tree**: Recursive tree with swaying motion
 - **Orbiting Circle**: Circular motion animation  
 - **Sierpinski Triangle**: Chaos game fractal generation
+- **Noise Demo**: Comparison of value noise and Perlin noise
 
 ```python
 from kanvas.core import run
@@ -169,6 +171,14 @@ model.clear(r, g, b)                 # Clear to RGB color
 model.line(x0, y0, x1, y1, r, g, b)  # Draw line
 model.rect(x, y, w, h, r, g, b, fill=False)      # Draw rectangle
 model.circle(cx, cy, radius, r, g, b, fill=False) # Draw circle
+```
+
+**Noise Functions:**
+```python
+from kanvas.model import noise, p_noise
+
+value = noise(x, y, seed=42)    # Value noise [0.0, 1.0]
+value = p_noise(x, y, seed=42)  # Perlin noise [0.0, 1.0]
 ```
 
 **Properties:** `model.w` (width), `model.h` (height)
